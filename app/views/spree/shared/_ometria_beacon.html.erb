@@ -27,7 +27,9 @@
 
         ometria.init("listing", result);
      <% elsif controller_name == "orders" %>
-        ometria.init("basket");
+        <% if !params[:id].present? %>
+          ometria.init("basket");
+        <% end %>
      <% elsif controller_name == "checkout" %>
         ometria.init("checkout")
         <% if params[:state] == "address" %>
