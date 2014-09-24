@@ -12,6 +12,7 @@
         var result = {}
         result["category_id"] = "<%= @taxon.id %>";
         result["nitems"] = <%= @products.count %>;
+        result["pids"] = [<%== @products.map { |p| '"' + p.id.to_s + '"' }.join(", ") %>];
 
         <% if params[:page].present? %>
           result["page"] = <%= params[:page] %>;
@@ -22,6 +23,7 @@
        var result = {}
        result["search"] = "<%= params[:keywords] %>";
        result["nitems"] = <%= @products.count %>;
+       result["pids"] = [<%== @products.map { |p| '"' + p.id.to_s + '"' }.join(", ") %>];
 
        <% if params[:page].present? %>
          result["page"] = <%= params[:page] %>;
