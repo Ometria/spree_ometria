@@ -11,6 +11,16 @@
       return false;
     }
 
+    function getNumberOfPages() {
+      var links = $('nav.pagination span.last a')
+      if (links.length > 0) {
+        var parser = document.createElement('a');
+        parser.href = links.attr('href');
+        return getQueryVariable(parser.search.substring(1), "page")
+      }
+      return false;
+    }
+
     if (ometria) {
 
       <% if controller_name == "home" %>
@@ -25,23 +35,25 @@
         result["nitems"] = "<%= @products.count %>"
         result["page"] = "<%= params[:page] %>"
 
-        var links = $('nav.pagination span.last a')
-        if (links.length > 0) {
-          var parser = document.createElement('a');
-          parser.href = links.attr('href');
-          var last_page = getQueryVariable(parser.search.substring(1), "page")
-          if (last_page !== false) {
-            result["npages"] = last_page;
-          }
+        var npages = getNumberOfPages();
+        if (npages !== false) {
+          result["npages"] = npages;
         }
 
         ometria.init("listing", result);
      <% elsif !params[:keywords].blank? %>
-          ometria.init("listing",{
-              "search": "<%= params[:keywords] %>",
-              "nitems": "<%= @products.count %>",
-              "page": "<%= params[:page] %>"
-          })
+       var result = {}
+       result["search"] = "<%= params[:keywords] %>"
+       result["nitems"] = "<%= @products.count %>"
+       result["page"] = "<%= params[:page] %>"
+
+       var npages = getNumberOfPages();
+       if (npages !== false) {
+          result["npages"] = npages;
+       }
+
+       console.log(result);
+       ometria.init("listing", result);
      <% elsif controller_name == "orders" %>
         ometria.init("basket");
      <% elsif controller_name == "checkout" %>
