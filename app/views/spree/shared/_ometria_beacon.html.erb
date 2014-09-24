@@ -1,6 +1,17 @@
 <script type="text/javascript" src="//cdn.ometria.com/tags/spreetesting.js"></script>
 <script type="text/javascript">
-    if(ometria){
+    function getQueryVariable(haystack, needle) {
+      var vars = haystack.split("&");
+      for (var i = 0; i < vars.length; i++) {
+        var pair = vars[i].split("=");
+        if (pair[0] == needle) {
+          return pair[1];
+        }
+      }
+      return(false);
+    }
+
+    if (ometria) {
 
       <% if controller_name == "home" %>
         ometria.init("homepage");
@@ -9,11 +20,22 @@
             "pid":"<%= @product.id %>"
         });
      <% elsif @taxon %>
-        ometria.init("listing",{
-            "category_id":"<%= @taxon.id %>",
-            "nitems": "<%= @products.count %>",
-            "page": "<%= params[:page] %>"
-        });
+        var result = {}
+        result["category_id"] = "<%= @taxon.id %>"
+        result["nitems"] = "<%= @products.count %>"
+        result["page"] = "<%= params[:page] %>"
+
+        var links = $('nav.pagination span.last a')
+        if (links.length > 0) {
+          var parser = document.createElement('a');
+          parser.href = links.attr('href');
+          var last_page = getQueryVariable(parser.search.substring(1), "page")
+          if (last_page !== false) {
+            result["npages"] = last_page;
+          }
+        }
+
+        ometria.init("listing", result);
      <% elsif !params[:keywords].blank? %>
           ometria.init("listing",{
               "search": "<%= params[:keywords] %>",
