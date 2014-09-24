@@ -22,6 +22,17 @@
           })
      <% elsif controller_name == "orders" %>
         ometria.init("basket");
+     <% elsif controller_name == "checkout" %>
+        ometria.init("checkout")
+        <% if params[:state] == "address" %>
+          ometria.trackCheckout(1);
+        <% elsif params[:state] == "delivery" %>
+          ometria.trackCheckout(2);
+        <% elsif params[:state] == "payment" %>
+          ometria.trackCheckout(3);
+        <% elsif params[:state] == "confirm" %>
+          ometria.trackCheckout(4);
+        <% end %>
      <% else %>
         ometria.init("<%= controller_name %>");
      <% end %>
