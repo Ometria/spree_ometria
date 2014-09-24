@@ -14,7 +14,7 @@
           result["category_id"] = "<%= @taxon.id %>";
         <% end %>
 
-        <% if params[:keywords].present? %>
+        <% if !params[:keywords].nil? %>
           result["search"] = "<%= params[:keywords] %>";
         <% end %>
 
