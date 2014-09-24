@@ -20,6 +20,8 @@
               "nitems": "<%= @products.count %>",
               "page": "<%= params[:page] %>"
           })
+     <% elsif controller_name == "orders" %>
+        ometria.init("basket");
      <% else %>
         ometria.init("<%= controller_name %>");
      <% end %>
