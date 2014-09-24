@@ -1,0 +1,29 @@
+<script type="text/javascript" src="//cdn.ometria.com/tags/spreetesting.js"></script>
+<script type="text/javascript">
+    alert("<%= params[:keywords] %>");
+    if(ometria){
+
+      <% if controller_name == "home" %>
+        ometria.init("homepage");
+      <% elsif @product %>
+        ometria.init("product",{
+            "pid":"<%= @product.id %>"
+        });
+     <% elsif @taxon %>
+        ometria.init("listing",{
+            "category_id":"<%= @taxon.id %>",
+            "nitems": "<%= @products.count %>",
+            "page": "<%= params[:page] %>"
+        });
+     <% elsif !params[:keywords].blank? %>
+          ometria.init("listing",{
+              "search": "<%= params[:keywords] %>",
+              "nitems": "<%= @products.count %>",
+              "page": "<%= params[:page] %>"
+          })
+     <% else %>
+        ometria.init("<%= controller_name %>");
+     <% end %>
+
+    }
+</script>
