@@ -6,7 +6,7 @@
         ometria.init("homepage");
       <% elsif @product %>
         ometria.init("product",{
-            "pid":"<%= @product.id %>"
+            "pid": "<%= @product.id %>";
         });
      <% elsif @taxon %>
         var result = {}
