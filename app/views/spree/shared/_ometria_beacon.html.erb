@@ -18,7 +18,7 @@
         <% end %>
 
         ometria.init("listing", result);
-     <% elsif !params[:keywords].blank? %>
+     <% elsif params[:keywords].present? %>
        var result = {}
        result["search"] = "<%= params[:keywords] %>";
        result["nitems"] = <%= @products.count %>;
