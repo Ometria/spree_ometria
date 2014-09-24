@@ -1,26 +1,5 @@
 <script type="text/javascript" src="//cdn.ometria.com/tags/spreetesting.js"></script>
 <script type="text/javascript">
-    function getQueryVariable(haystack, needle) {
-      var vars = haystack.split("&");
-      for (var i = 0; i < vars.length; i++) {
-        var pair = vars[i].split("=");
-        if (pair[0] == needle) {
-          return pair[1];
-        }
-      }
-      return false;
-    }
-
-    function getNumberOfPages() {
-      var links = $('nav.pagination span.last a')
-      if (links.length > 0) {
-        var parser = document.createElement('a');
-        parser.href = links.attr('href');
-        return getQueryVariable(parser.search.substring(1), "page")
-      }
-      return false;
-    }
-
     if (ometria) {
 
       <% if controller_name == "home" %>
@@ -33,26 +12,21 @@
         var result = {}
         result["category_id"] = "<%= @taxon.id %>"
         result["nitems"] = "<%= @products.count %>"
-        result["page"] = "<%= params[:page] %>"
 
-        var npages = getNumberOfPages();
-        if (npages !== false) {
-          result["npages"] = npages;
-        }
+        <% if params[:page].present? %>
+        result["page"] = <%= params[:page] %>;
+        <% end %>
 
         ometria.init("listing", result);
      <% elsif !params[:keywords].blank? %>
        var result = {}
        result["search"] = "<%= params[:keywords] %>"
        result["nitems"] = "<%= @products.count %>"
-       result["page"] = "<%= params[:page] %>"
 
-       var npages = getNumberOfPages();
-       if (npages !== false) {
-          result["npages"] = npages;
-       }
+       <% if params[:page].present? %>
+       result["page"] = <%= params[:page] %>;
+       <% end %>
 
-       console.log(result);
        ometria.init("listing", result);
      <% elsif controller_name == "orders" %>
         ometria.init("basket");
