@@ -1,7 +1,6 @@
 <script type="text/javascript" src="//cdn.ometria.com/tags/spreetesting.js"></script>
 <script type="text/javascript">
     if (ometria) {
-
       <% if controller_name == "home" %>
         ometria.init("homepage");
       <% elsif @product %>
@@ -44,8 +43,7 @@
           ometria.trackCheckout(4);
         <% end %>
      <% else %>
-        ometria.init("<%= controller_name %>");
+        ometria.init(null);
      <% end %>
-
     }
 </script>
