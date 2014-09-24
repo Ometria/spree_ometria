@@ -7,9 +7,17 @@
         ometria.init("product",{
             "pid": "<%= @product.id %>";
         });
-     <% elsif @taxon %>
+     <% elsif @taxon or @products %>
         var result = {}
-        result["category_id"] = "<%= @taxon.id %>";
+
+        <% if @taxon %>
+          result["category_id"] = "<%= @taxon.id %>";
+        <% end %>
+
+        <% if params[:keywords].present? %>
+          result["search"] = "<%= params[:keywords] %>";
+        <% end %>
+
         result["nitems"] = <%= @products.count %>;
         result["pids"] = [<%== @products.map { |p| '"' + p.id.to_s + '"' }.join(", ") %>];
 
@@ -18,17 +26,6 @@
         <% end %>
 
         ometria.init("listing", result);
-     <% elsif params[:keywords].present? %>
-       var result = {}
-       result["search"] = "<%= params[:keywords] %>";
-       result["nitems"] = <%= @products.count %>;
-       result["pids"] = [<%== @products.map { |p| '"' + p.id.to_s + '"' }.join(", ") %>];
-
-       <% if params[:page].present? %>
-         result["page"] = <%= params[:page] %>;
-       <% end %>
-
-       ometria.init("listing", result);
      <% elsif controller_name == "orders" %>
         ometria.init("basket");
      <% elsif controller_name == "checkout" %>
