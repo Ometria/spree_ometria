@@ -10,21 +10,21 @@
         });
      <% elsif @taxon %>
         var result = {}
-        result["category_id"] = "<%= @taxon.id %>"
-        result["nitems"] = <%= @products.count %>
+        result["category_id"] = "<%= @taxon.id %>";
+        result["nitems"] = <%= @products.count %>;
 
         <% if params[:page].present? %>
-        result["page"] = <%= params[:page] %>;
+          result["page"] = <%= params[:page] %>;
         <% end %>
 
         ometria.init("listing", result);
      <% elsif !params[:keywords].blank? %>
        var result = {}
-       result["search"] = "<%= params[:keywords] %>"
-       result["nitems"] = <%= @products.count %>
+       result["search"] = "<%= params[:keywords] %>";
+       result["nitems"] = <%= @products.count %>;
 
        <% if params[:page].present? %>
-       result["page"] = <%= params[:page] %>;
+         result["page"] = <%= params[:page] %>;
        <% end %>
 
        ometria.init("listing", result);
