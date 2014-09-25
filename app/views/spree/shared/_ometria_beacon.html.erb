@@ -47,6 +47,8 @@
               basket.addLineItem("<%= item.variant_id %>", <%= item.quantity %>, <%= item.price %>);
             <% end %>
             ometria.setBasket(basket);
+          <% else %>
+            basket.setBasket(new ometria.Basket());
           <% end %>
 
         <% end %>
