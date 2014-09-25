@@ -38,6 +38,17 @@
      <% elsif controller_name == "orders" %>
         <% if !params[:id].present? %>
           ometria.init("basket");
+
+          <% if !@order.number.nil? %>
+            var basket = new ometria.Basket();
+            basket.setId("<%= @order.number %>");
+            basket.setTotal(<%= @order.total %>, "<%= @order.currency %>");
+            <% for item in @order.line_items %>
+              basket.addLineItem("<%= item.variant_id %>", <%= item.quantity %>, <%= item.price %>);
+            <% end %>
+            ometria.setBasket(basket);
+          <% end %>
+
         <% end %>
      <% elsif controller_name == "checkout" %>
         ometria.init("checkout")
