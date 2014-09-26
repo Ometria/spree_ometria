@@ -39,6 +39,10 @@
         <% if !params[:id].present? %>
           ometria.init("basket");
 
+          <% if @order.email.present? %>
+            ometria.idenfiy("<%= @order.email %>");
+          <% end %>
+
           <% if !@order.number.nil? %>
             var basket = new ometria.Basket();
             basket.setId("<%= @order.number %>");
