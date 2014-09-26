@@ -36,7 +36,16 @@
 
         ometria.init("listing", result);
      <% elsif controller_name == "orders" %>
-        <% if !params[:id].present? %>
+        <% if params[:id].present? %>
+
+          <% if @order && order_just_completed?(@order) %>
+            ometria.init("confirmation");
+            ometria.trackTransaction("<%= @order.number %>");
+          <% else %>
+            ometria.init(null);
+          <% end %>
+
+        <% else %>
           ometria.init("basket");
 
           <% if @order.email.present? %>
