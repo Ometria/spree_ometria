@@ -1,2 +1,2 @@
-<!-- insert_bottom 'body' -->
+<!-- insert_bottom 'head' -->
 <%= render 'spree/shared/ometria_beacon' %>
