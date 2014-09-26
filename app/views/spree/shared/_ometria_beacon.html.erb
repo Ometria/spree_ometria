@@ -8,13 +8,16 @@
             "pid": "<%= @product.id %>"
         });
 
-        $(document).ready(function() {
-          $("button#add-to-cart-button").on("click", function(event) {
-            var quantity = $("div.add-to-cart input#quantity").val();
-            ometria.trackAddToBasket("<%= @product.id %>", quantity);
-            return true;
-          })
-        })
+        if ($) {
+          $(document).ready(function() {
+            $("button#add-to-cart-button").on("click", function(event) {
+              var quantity = $("div.add-to-cart input#quantity").val();
+              ometria.trackAddToBasket("<%= @product.id %>", quantity);
+              return true;
+            });
+          });
+        }
+
 
      <% elsif @taxon or @products %>
         var result = {}
