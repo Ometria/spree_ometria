@@ -1,5 +1,5 @@
-SpreeOmetria
-============
+Ometria for Spree
+=================
 
 Ometria extension for Spree.
 
