@@ -1,0 +1,20 @@
+<%= render :partial => 'spree/admin/shared/configuration_menu' %>
+
+<% content_for :page_title do %>
+  <%= Spree.t(:ometria_settings) %>
+<% end %>
+
+<%= form_tag admin_ometria_settings_path, :method => :put do %>
+  <div id="preferences" data-hook>
+    <fieldset class="general no-border-top">
+      <div class="field">
+        <%= label_tag(:account_id, Spree.t(:account_id)) + tag(:br) %>
+        <%= preference_field_tag(:account_id, Spree::Ometria::Config.account_id, :type => :string) %>
+      </div>
+
+      <div class="form-buttons filter-actions actions" data-hook="buttons">
+        <%= button Spree.t('actions.update'), 'icon-refresh' %>
+      </div>
+    </fieldset>
+  </div>
+<% end %>

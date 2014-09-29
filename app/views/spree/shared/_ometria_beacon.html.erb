@@ -1,5 +1,7 @@
 <script type="text/javascript" src="//cdn.ometria.com/tags/spreetesting.js"></script>
 <script type="text/javascript">
+var ometria_account_id = "<%= Spree::Ometria::Config.account_id || '' %>";
+
 if (ometria) {
   <% if controller_name == "home" %>
     ometria.init("homepage");
