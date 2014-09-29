@@ -1,8 +1,12 @@
 # encoding: UTF-8
+lib = File.expand_path('../lib', __FILE__)
+$LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
+require 'spree/ometria/version'
+
 Gem::Specification.new do |s|
   s.platform    = Gem::Platform::RUBY
   s.name        = 'spree_ometria'
-  s.version     = '2.3.3'
+  s.version     = Spree::Ometria::VERSION
   s.summary     = 'Ometria extension for Spree'
   s.description = 'Ometria extension for Spree'
   s.required_ruby_version = '>= 1.9.3'
