@@ -3,4 +3,5 @@
 
 en:
   spree:
+    ometria_account_id: Account ID
     ometria_settings: Ometria Settings
