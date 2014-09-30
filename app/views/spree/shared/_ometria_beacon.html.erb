@@ -1,89 +1,95 @@
-<script type="text/javascript" src="//cdn.ometria.com/tags/spreetesting.js"></script>
 <script type="text/javascript">
-var ometria_account_id = "<%= Spree::Ometria::Config.account_id || '' %>";
 
-if (ometria) {
-  <% if controller_name == "home" %>
-    ometria.init("homepage");
-  <% elsif @product %>
-    ometria.init("product",{
-      "pid": "<%= @product.id %>"
-    });
+var ometria={};
+ometria.onLoad=function(){
+    var ometria_account_id = "<%= Spree::Ometria::Config.account_id || '' %>";
 
-    if ($) {
-      $(document).ready(function() {
-        $("button#add-to-cart-button").on("click", function(event) {
-          var quantity = $("div.add-to-cart input#quantity").val();
-          ometria.trackAddToBasket("<%= @product.id %>", quantity);
-          return true;
-        });
+    <% if controller_name == "home" %>
+      ometria.init("homepage");
+    <% elsif @product %>
+      ometria.init("product",{
+        "pid": "<%= @product.id %>"
       });
-    }
-  <% elsif @taxon or @products %>
-    var result = {}
 
-    <% if @taxon %>
-      result["category_id"] = "<%= @taxon.id %>";
-    <% end %>
+      if ($) {
+        $(document).ready(function() {
+          $("button#add-to-cart-button").on("click", function(event) {
+            var quantity = $("div.add-to-cart input#quantity").val();
+            ometria.trackAddToBasket("<%= @product.id %>", quantity);
+            return true;
+          });
+        });
+      }
+    <% elsif @taxon or @products %>
+      var result = {}
 
-    <% if !params[:keywords].nil? %>
-      result["search"] = "<%= params[:keywords] %>";
-    <% end %>
+      <% if @taxon %>
+        result["category_id"] = "<%= @taxon.id %>";
+      <% end %>
 
-    result["nitems"] = <%= @products.count %>;
-    result["pids"] = [<%== @products.map { |p| '"' + p.id.to_s + '"' }.join(", ") %>];
+      <% if !params[:keywords].nil? %>
+        result["search"] = "<%= params[:keywords] %>";
+      <% end %>
 
-    <% if params[:page].present? %>
-      result["page"] = <%= params[:page] %>;
-    <% end %>
+      result["nitems"] = <%= @products.count %>;
+      result["pids"] = [<%== @products.map { |p| '"' + p.id.to_s + '"' }.join(", ") %>];
 
-    ometria.init("listing", result);
-  <% elsif controller_name == "orders" %>
-    <% if params[:id].present? %>
+      <% if params[:page].present? %>
+        result["page"] = <%= params[:page] %>;
+      <% end %>
 
-      <% if @order && order_just_completed?(@order) %>
-        ometria.init("confirmation");
-        ometria.trackTransaction("<%= @order.number %>");
+      ometria.init("listing", result);
+    <% elsif controller_name == "orders" %>
+      <% if params[:id].present? %>
+
+        <% if @order && order_just_completed?(@order) %>
+          ometria.init("confirmation");
+          ometria.trackTransaction("<%= @order.number %>");
+        <% else %>
+          ometria.init(null);
+        <% end %>
+
       <% else %>
-        ometria.init(null);
+        ometria.init("basket");
+
+        <% if @order.email.present? %>
+          ometria.idenfiy("<%= @order.email %>");
+        <% end %>
+
+        <% if !@order.number.nil? %>
+          var basket = new ometria.Basket();
+          basket.setId("<%= @order.number %>");
+          basket.setTotal(<%= @order.total %>, "<%= @order.currency %>");
+          <% for item in @order.line_items %>
+            basket.addLineItem("<%= item.variant_id %>", <%= item.quantity %>, <%= item.price %>);
+          <% end %>
+          ometria.setBasket(basket);
+        <% else %>
+          basket.setBasket(new ometria.Basket());
+        <% end %>
+
+      <% end %>
+    <% elsif controller_name == "checkout" %>
+
+      ometria.init("checkout")
+
+      <% if params[:state] == "address" %>
+        ometria.trackCheckout(1);
+      <% elsif params[:state] == "delivery" %>
+        ometria.trackCheckout(2);
+      <% elsif params[:state] == "payment" %>
+        ometria.trackCheckout(3);
+      <% elsif params[:state] == "confirm" %>
+        ometria.trackCheckout(4);
       <% end %>
 
     <% else %>
-      ometria.init("basket");
-
-      <% if @order.email.present? %>
-        ometria.idenfiy("<%= @order.email %>");
-      <% end %>
-
-      <% if !@order.number.nil? %>
-        var basket = new ometria.Basket();
-        basket.setId("<%= @order.number %>");
-        basket.setTotal(<%= @order.total %>, "<%= @order.currency %>");
-        <% for item in @order.line_items %>
-          basket.addLineItem("<%= item.variant_id %>", <%= item.quantity %>, <%= item.price %>);
-        <% end %>
-        ometria.setBasket(basket);
-      <% else %>
-        basket.setBasket(new ometria.Basket());
-      <% end %>
-
+      ometria.init(null);
     <% end %>
-  <% elsif controller_name == "checkout" %>
-
-    ometria.init("checkout")
-
-    <% if params[:state] == "address" %>
-      ometria.trackCheckout(1);
-    <% elsif params[:state] == "delivery" %>
-      ometria.trackCheckout(2);
-    <% elsif params[:state] == "payment" %>
-      ometria.trackCheckout(3);
-    <% elsif params[:state] == "confirm" %>
-      ometria.trackCheckout(4);
-    <% end %>
-
-  <% else %>
-    ometria.init(null);
-  <% end %>
-}
+};
+(function(){
+    var url=window.location.protocol+"//cdn.ometria.com/tags/spreetesting.js";
+    setTimeout(function(){var sc=document.createElement('script');sc.src=url;sc.setAttribute('async','true');
+    document.getElementsByTagName("head")[0].appendChild(sc);},50);
+})();
 </script>
