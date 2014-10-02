@@ -2,8 +2,6 @@
 
 var ometria={};
 ometria.onLoad=function(){
-    var ometria_account_id = "<%= Spree::Ometria::Config.account_id || '' %>";
-
     <% if controller_name == "home" %>
       ometria.init("homepage");
     <% elsif @product %>
@@ -88,7 +86,7 @@ ometria.onLoad=function(){
     <% end %>
 };
 (function(){
-    var url=window.location.protocol+"//cdn.ometria.com/tags/spreetesting.js";
+    var url=window.location.protocol+"//cdn.ometria.com/tags/<%= Spree::Ometria::Config.account_id || 'error' %>.js";
     setTimeout(function(){var sc=document.createElement('script');sc.src=url;sc.setAttribute('async','true');
     document.getElementsByTagName("head")[0].appendChild(sc);},50);
 })();
