@@ -7,7 +7,7 @@ ometria.onLoad=function(){
     <% if controller_name == "home" %>
       ometria.init("homepage");
     <% elsif @product %>
-      ometria.init("product",{
+      ometria.init("product", {
         "pid": "<%= @product.id %>"
       });
 
