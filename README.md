@@ -19,4 +19,12 @@ bundle
 bundle exec rails g spree_ometria:install
 ```
 
+Releases
+--------
+
+Please visit https://github.com/Ometria/spree_ometria/branches and select
+the release that is compatible with your Spree store.
+
+- Release 1.0: Spree 2.X
+
 Copyright (c) 2014 Ometria, released under the New BSD License
